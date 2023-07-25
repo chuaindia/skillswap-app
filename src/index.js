@@ -1,17 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const app = express();
+const port = 5000;
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+app.use(cors());
+app.use(bodyParser.json());
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// Sample data (replace this with your database)
+let skillListings = [
+  { id: 1, user: 'user1', skillOffered: 'Programming', skillWanted: 'Guitar' },
+  { id: 2, user: 'user2', skillOffered: 'Photography', skillWanted: 'Cooking' },
+];
+
+app.get('/api/skillListings', (req, res) => {
+  res.json(skillListings);
+});
+
+app.post('/api/skillListings', (req, res) => {
+  const newListing = req.body;
+  skillListings.push(newListing);
+  res.status(201).json(newListing);
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
